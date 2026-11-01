@@ -1,0 +1,41 @@
+{
+	"name": "compliance-handson",
+	"dockerComposeFile": "./compose.yml",
+	"service": "app",
+	"workspaceFolder": "/workspaces",
+	"shutdownAction": "stopCompose",
+	"features": {
+		// ホストのDockerをコンテナから使う(act，MiniStackのRDSとECS)．
+		"ghcr.io/devcontainers/features/docker-outside-of-docker:1": {
+			"moby": false
+		}
+	},
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"anthropic.claude-code",
+				"growthjack.claude-code-usage",
+				"golang.go",
+				"biomejs.biome",
+				"vitest.explorer",
+				"opentofu.vscode-opentofu",
+				"redhat.vscode-yaml",
+				"github.vscode-github-actions",
+				"ms-azuretools.vscode-containers",
+				"bierner.markdown-mermaid",
+				"AquaSecurityOfficial.trivy-vulnerability-scanner",
+				"semgrep.semgrep"
+			]
+		}
+	},
+	"postCreateCommand": "mise run setup",
+	"initializeCommand": "mkdir -p \"${localWorkspaceFolder}/.devcontainer/claude-home/.claude\" \"${localWorkspaceFolder}/.devcontainer/rtk-home/.config/rtk\" \"${localWorkspaceFolder}/.devcontainer/rtk-home/.local/share/rtk\"",
+	"mounts": [
+		"source=${localWorkspaceFolder}/.devcontainer/claude-home/.claude,target=/root/.claude,type=bind",
+		"source=${localWorkspaceFolder}/.devcontainer/rtk-home/.config/rtk,target=/root/.config/rtk,type=bind",
+		"source=${localWorkspaceFolder}/.devcontainer/rtk-home/.local/share/rtk,target=/root/.local/share/rtk,type=bind"
+	],
+	"containerEnv": {
+		"CLAUDE_CONFIG_DIR": "/root/.claude"
+	}
+}
