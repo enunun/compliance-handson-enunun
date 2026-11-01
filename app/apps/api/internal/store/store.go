@@ -41,5 +41,6 @@ type Store interface {
 	CreateSession(ctx context.Context, userID int64, token string) error
 	SetRole(ctx context.Context, userID int64, role Role) error
 	ListNotes(ctx context.Context, ownerID int64) ([]Note, error)
+	SearchNotes(ctx context.Context, ownerID int64, query string) ([]Note, error)
 	CreateNote(ctx context.Context, ownerID int64, body string) (Note, error)
 }

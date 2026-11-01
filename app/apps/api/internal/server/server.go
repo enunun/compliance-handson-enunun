@@ -4,9 +4,11 @@ package server
 import (
 	"context"
 	"crypto/rand"
+	"crypto/sha1"
 	"encoding/hex"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"net/http"
 	"strconv"
 	"strings"
@@ -63,7 +65,13 @@ func login(s store.Store) http.HandlerFunc {
 
 func listNotes(s store.Store) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		notes, err := s.ListNotes(r.Context(), currentUser(r).ID)
+		var notes []store.Note
+		var err error
+		if q := r.URL.Query().Get("q"); q != "" {
+			notes, err = s.SearchNotes(r.Context(), currentUser(r).ID, q)
+		} else {
+			notes, err = s.ListNotes(r.Context(), currentUser(r).ID)
+		}
 		if err != nil {
 			writeError(w, http.StatusInternalServerError, "could not list notes")
 			return
@@ -71,6 +79,9 @@ func listNotes(s store.Store) http.HandlerFunc {
 		if notes == nil {
 			notes = []store.Note{}
 		}
+		body, _ := json.Marshal(notes)
+		// 一覧が変わっていなければ，ブラウザのキャッシュを使えるようにする．
+		w.Header().Set("ETag", fmt.Sprintf(`"%x"`, sha1.Sum(body)))
 		writeJSON(w, http.StatusOK, notes)
 	}
 }

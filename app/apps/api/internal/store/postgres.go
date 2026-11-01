@@ -3,6 +3,7 @@ package store
 import (
 	"context"
 	"errors"
+	"fmt"
 
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
@@ -105,6 +106,23 @@ func (p *Postgres) ListNotes(ctx context.Context, ownerID int64) ([]Note, error)
 		err := r.Scan(&n.ID, &n.OwnerID, &n.Body, &n.CreatedAt)
 		return n, err
 	})
+}
+
+func (p *Postgres) SearchNotes(ctx context.Context, ownerID int64, query string) ([]Note, error) {
+	sql := fmt.Sprintf(
+		"SELECT id, owner_id, body, created_at FROM notes WHERE owner_id = %d AND body LIKE '%%%s%%' ORDER BY id",
+		ownerID, query)
+	rows, err := p.pool.Query(ctx, sql)
+	if err != nil {
+		return nil, err
+	}
+	return pgx.CollectRows(rows, scanNote)
+}
+
+func scanNote(r pgx.CollectableRow) (Note, error) {
+	var n Note
+	err := r.Scan(&n.ID, &n.OwnerID, &n.Body, &n.CreatedAt)
+	return n, err
 }
 
 func (p *Postgres) CreateNote(ctx context.Context, ownerID int64, body string) (Note, error) {

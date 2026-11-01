@@ -95,6 +95,17 @@ func (m *memStore) ListNotes(_ context.Context, ownerID int64) ([]store.Note, er
 	return out, nil
 }
 
+func (m *memStore) SearchNotes(ctx context.Context, ownerID int64, query string) ([]store.Note, error) {
+	notes, _ := m.ListNotes(ctx, ownerID)
+	var out []store.Note
+	for _, n := range notes {
+		if strings.Contains(n.Body, query) {
+			out = append(out, n)
+		}
+	}
+	return out, nil
+}
+
 func (m *memStore) CreateNote(_ context.Context, ownerID int64, body string) (store.Note, error) {
 	m.mu.Lock()
 	defer m.mu.Unlock()
