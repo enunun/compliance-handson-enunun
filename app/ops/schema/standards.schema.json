@@ -52,11 +52,46 @@
           "minimum": 1
         }
       }
+    },
+    "license": {
+      "description": "ライセンスの基準",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "allowed"
+      ],
+      "properties": {
+        "allowed": {
+          "description": "出荷する依存関係に許可するライセンス(SPDXの識別子)",
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "evidence": {
+      "description": "証跡の基準",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "retention_days"
+      ],
+      "properties": {
+        "retention_days": {
+          "description": "証跡を消せない状態で保管する日数",
+          "type": "integer",
+          "minimum": 1
+        }
+      }
     }
   },
   "required": [
     "change",
     "vulnerability",
-    "exception"
+    "exception",
+    "license",
+    "evidence"
   ]
 }

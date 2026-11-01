@@ -11,3 +11,17 @@ vulnerability:
 exception:
   # 例外の期限は，承認した日から最長でこの日数までにする．
   max_days: 90
+
+license:
+  # 出荷する依存関係に許可するライセンス．ここにないものは，法務の確認を経て足す．
+  allowed:
+    - MIT
+    - ISC
+    - BSD-2-Clause
+    - BSD-3-Clause
+    - Apache-2.0
+    - 0BSD
+
+evidence:
+  # 証跡を消せない状態で保管する日数．監査の対象期間(1年)に余裕を持たせる．
+  retention_days: 400

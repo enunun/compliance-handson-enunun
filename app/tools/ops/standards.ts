@@ -9,6 +9,8 @@ export type Standards = {
   change: { required_approvals: number };
   vulnerability: { fail_severity: Severity };
   exception: { max_days: number };
+  license: { allowed: string[] };
+  evidence: { retention_days: number };
 };
 
 /** 例外．ops/schema/exceptions.schema.json の形に合う． */

@@ -21,6 +21,13 @@ export default defineConfig({
           testTimeout: 60_000,
         },
       },
+      {
+        test: {
+          name: "ops",
+          include: ["tests/ops/**/*.test.ts"],
+          testTimeout: 60_000,
+        },
+      },
     ],
   },
 });

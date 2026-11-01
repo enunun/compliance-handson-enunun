@@ -22,3 +22,10 @@ mainに入るには，standards.yaml の `change.required_approvals` 人の承�
 | 事象 | 最初に知らせる相手 | 手段 |
 | --- | --- | --- |
 | シークレットの漏洩 | セキュリティ責任者 | チャットの #security と電話 |
+
+## 証跡の保管
+
+ゲートの結果やSBOMなどの証跡は，CIの`evidence`ジョブが証跡の保管場所(S3のバケット `app-evidence`)へ送る．
+置き場所は `<日付>/<コミット>/` である．
+保管場所はObject Lock(COMPLIANCEモード)で守り，standards.yaml の `evidence.retention_days` の間は誰も消せない．
+保管期間を過ぎた証跡は，ライフサイクルの設定で消える．

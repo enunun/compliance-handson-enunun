@@ -62,6 +62,20 @@ description = "例外の期限を検査する"
 depends = ["install"]
 run = "pnpm exec tsx tools/gates/exceptions.ts"
 
+[tasks.sbom]
+description = "コンポーネントごとのSBOM(CycloneDX)を作る"
+depends = ["install"]
+run = [
+  'mkdir -p "${EVIDENCE_DIR:-out/evidence}/sbom"',
+  'trivy fs --quiet --format cyclonedx --skip-dirs apps/api,tests/gates/fixtures --output "${EVIDENCE_DIR:-out/evidence}/sbom/web.cdx.json" .',
+  'trivy fs --quiet --format cyclonedx --output "${EVIDENCE_DIR:-out/evidence}/sbom/api.cdx.json" apps/api',
+]
+
+[tasks."gate:license"]
+description = "SBOMの依存関係のライセンスが，許可したものかを検査する"
+depends = ["sbom"]
+run = 'pnpm exec tsx tools/gates/license.ts "${EVIDENCE_DIR:-out/evidence}"/sbom/*.cdx.json'
+
 [tasks."ops:verify"]
 description = "基準値と運用項目を検証し，仕組みとワークフローを突き合わせる"
 depends = ["install"]
@@ -87,11 +101,25 @@ depends = ["lint", "test", "test:gates", "ops:verify"]
 
 [tasks.gates]
 description = "すべてのゲートを実行する(CIではゲートごとのジョブ)"
-depends = ["gate:secrets", "gate:sca", "gate:exceptions"]
+depends = ["gate:secrets", "gate:sca", "gate:exceptions", "gate:license"]
 
 [tasks.check]
 description = "題材の検査とゲートをまとめて実行する"
 depends = ["check:code", "gates"]
+
+[tasks."test:ops"]
+description = "運用テストを実行する(先にmise run upを実行する)"
+depends = ["install"]
+run = "pnpm test:ops"
+
+[tasks."evidence:upload"]
+description = "out/evidence/ の証跡を，日付とコミットごとに証跡の保管場所へ送る"
+run = """
+bucket="$(tofu -chdir=infra output -raw evidence_bucket)"
+prefix="$(date -u +%Y-%m-%d)/$(git rev-parse --short HEAD)"
+aws s3 cp --recursive out/evidence "s3://${bucket}/${prefix}/"
+echo "uploaded to s3://${bucket}/${prefix}/"
+"""
 
 [tasks.up]
 description = "MiniStackの上に本番の環境を作る"
@@ -101,7 +129,7 @@ run = [
 ]
 
 [tasks.down]
-description = "本番の環境を消す"
+description = "本番の環境を消す(証跡を保管したバケットは，保管期間の間は消せない)"
 run = "tofu -chdir=infra destroy -input=false -auto-approve"
 
 [tasks."dev:api"]
