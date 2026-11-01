@@ -1,0 +1,15 @@
+# yaml-language-server: $schema=./schema/items.schema.json
+# 運用項目．人が読む一覧(items.md)は mise run ops:render で生成する．
+
+items:
+  - id: change-management
+    title: 変更管理
+    category: 運用管理
+    requirements: [SOC2:CC8.1, ISO27001:A.8.32]
+    mechanisms:
+      - workflow: ci.yml
+        job: check
+    evidence: ブランチ保護の設定(JSON)と，プルリクエストのレビュー記録
+    timing: 定常(変更ごと)
+    actor: 自動
+    runbook: runbooks/emergency-change.md

@@ -1,0 +1,80 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "運用項目",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["items"],
+  "properties": {
+    "items": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/item" }
+    }
+  },
+  "$defs": {
+    "item": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "title",
+        "category",
+        "requirements",
+        "mechanisms",
+        "evidence",
+        "timing",
+        "actor"
+      ],
+      "properties": {
+        "id": {
+          "description": "運用項目の識別子(英小文字とハイフン)",
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9-]*$"
+        },
+        "title": { "type": "string", "minLength": 1 },
+        "category": {
+          "description": "『運用設計の教科書』の3分類",
+          "enum": ["業務運用", "基盤運用", "運用管理"]
+        },
+        "requirements": {
+          "description": "根拠になる規格の要求(例：SOC2:CC8.1)",
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string" }
+        },
+        "mechanisms": {
+          "description": "要求を満たす仕組み",
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/mechanism" }
+        },
+        "evidence": {
+          "description": "仕組みが動いたことを示す記録",
+          "type": "string",
+          "minLength": 1
+        },
+        "timing": {
+          "description": "定常(日次，変更ごとなど)か非定常(発生時)か",
+          "type": "string",
+          "minLength": 1
+        },
+        "actor": { "enum": ["自動", "人"] },
+        "runbook": {
+          "description": "手順書のパス(ops/からの相対)",
+          "type": "string"
+        }
+      }
+    },
+    "mechanism": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["workflow", "job"],
+      "properties": {
+        "workflow": {
+          "description": ".github/workflows/のファイル名",
+          "type": "string"
+        },
+        "job": { "description": "ワークフローのジョブ名", "type": "string" }
+      }
+    }
+  }
+}

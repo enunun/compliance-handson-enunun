@@ -1,0 +1,5 @@
+# yaml-language-server: $schema=./schema/standards.schema.json
+# 基準値．変更にはセキュリティ責任者の承認が要る(.github/CODEOWNERS)．
+
+change:
+  required_approvals: 1

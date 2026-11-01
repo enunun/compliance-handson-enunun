@@ -1,0 +1,12 @@
+items:
+  - id: change-management
+    title: 変更管理
+    category: 運用管理
+    requirements: [SOC2:CC8.1]
+    mechanisms:
+      - workflow: ci.yml
+        job: check
+    evidence: レビュー記録
+    timing: 定常(変更ごと)
+    actor: 自動
+    runbook: runbooks/emergency-change.md

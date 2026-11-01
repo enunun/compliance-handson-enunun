@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "基準値",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "change": {
+      "description": "変更管理の基準",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["required_approvals"],
+      "properties": {
+        "required_approvals": {
+          "description": "mainへの変更に要る承認の数",
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    }
+  },
+  "required": ["change"]
+}

@@ -51,9 +51,18 @@ description = "items.yaml から運用項目一覧(ops/items.md)を作る"
 depends = ["install"]
 run = "pnpm exec tsx tools/ops/render.ts"
 
+[tasks."ops:evidence:change"]
+description = "mainのブランチ保護の設定を，証跡としてout/evidence/に保存する"
+run = """
+mkdir -p out/evidence/change
+gh api "repos/{owner}/{repo}/branches/main/protection" \
+  > "out/evidence/change/branch-protection-$(date +%Y%m%d).json"
+echo "wrote out/evidence/change/branch-protection-$(date +%Y%m%d).json"
+"""
+
 [tasks.check]
 description = "題材の検査をまとめて実行する(CIと同じ)"
-depends = ["lint", "test"]
+depends = ["lint", "test", "test:gates", "ops:verify"]
 
 [tasks.up]
 description = "MiniStackの上に本番の環境を作る"
