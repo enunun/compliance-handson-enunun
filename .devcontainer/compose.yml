@@ -15,6 +15,9 @@ services:
       AWS_SECRET_ACCESS_KEY: test
       AWS_REGION: ap-northeast-1
       AWS_CONFIG_FILE: /workspaces/.devcontainer/aws-config
+    ports:
+      - 3000:3000
+      - 8080:8080
     depends_on:
       - ministack
 
