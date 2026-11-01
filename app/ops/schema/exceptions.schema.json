@@ -3,18 +3,28 @@
   "title": "例外",
   "type": "object",
   "additionalProperties": false,
-  "required": ["exceptions"],
+  "required": [
+    "exceptions"
+  ],
   "properties": {
     "exceptions": {
       "type": "array",
-      "items": { "$ref": "#/$defs/exception" }
+      "items": {
+        "$ref": "#/$defs/exception"
+      }
     }
   },
   "$defs": {
     "exception": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["id", "target", "reason", "approver", "expires"],
+      "required": [
+        "id",
+        "target",
+        "reason",
+        "approver",
+        "expires"
+      ],
       "properties": {
         "id": {
           "description": "例外の識別子(例：EXC-001)",
@@ -22,12 +32,16 @@
           "pattern": "^EXC-[0-9]{3}$"
         },
         "target": {
-          "description": "例外にする検出(脆弱性ならCVEなどの識別子)",
+          "description": "例外にする検出(脆弱性ならCVEなどの識別子，SASTならルールの識別子)",
           "type": "string",
           "minLength": 1
         },
         "package": {
           "description": "対象のパッケージ(分かる場合)",
+          "type": "string"
+        },
+        "path": {
+          "description": "対象のファイル(SASTの検出など，場所で特定するとき)",
           "type": "string"
         },
         "reason": {

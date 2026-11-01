@@ -1,0 +1,5 @@
+# Semgrepが調べないファイル．このファイルを置くと，Semgrepの既定の除外(tests/ など)を置き換える．
+# ゲートのテストの入力(fixtures/)は，app/tools/gates/sast.ts が題材全体を調べるときだけ外す．
+node_modules/
+out/
+.terraform/

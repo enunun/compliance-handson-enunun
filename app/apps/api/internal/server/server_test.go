@@ -203,3 +203,22 @@ func TestOnlyAdminCanSetRole(t *testing.T) {
 		t.Fatalf("admin: status %d", rec.Code)
 	}
 }
+
+func TestSearchOwnNotes(t *testing.T) {
+	h := server.New(newMemStore(t))
+	admin := loginAs(t, h, "admin@example.com")
+	member := loginAs(t, h, "member@example.com")
+	for _, body := range []string{"買い物", "会議のメモ"} {
+		do(t, h, "POST", "/api/notes", admin, `{"body":"`+body+`"}`)
+	}
+	do(t, h, "POST", "/api/notes", member, `{"body":"会議の準備"}`)
+
+	var notes []store.Note
+	rec := do(t, h, "GET", "/api/notes?q=会議", admin, "")
+	if err := json.NewDecoder(rec.Body).Decode(&notes); err != nil {
+		t.Fatal(err)
+	}
+	if len(notes) != 1 || notes[0].Body != "会議のメモ" {
+		t.Fatalf("notes = %+v", notes)
+	}
+}

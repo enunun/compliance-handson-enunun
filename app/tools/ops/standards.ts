@@ -18,6 +18,7 @@ export type Exception = {
   id: string;
   target: string;
   package?: string;
+  path?: string;
   reason: string;
   approver: string;
   expires: string;

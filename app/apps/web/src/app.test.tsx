@@ -56,6 +56,16 @@ describe("画面", () => {
     );
   });
 
+  it("メモの改行は<br>で表示し，HTMLはエスケープする", async () => {
+    const fetch = vi.fn(async () =>
+      json([{ id: 1, ownerId: 1, body: "a\n<script>", createdAt: "" }]),
+    );
+    const res = await createApp({ apiUrl, fetch }).request("/", {
+      headers: { Cookie: "token=t1" },
+    });
+    expect(await res.text()).toContain("<li>a<br/>&lt;script&gt;</li>");
+  });
+
   it("空のメモはAPIに送らずに拒む", async () => {
     const fetch = vi.fn();
     const res = await createApp({ apiUrl, fetch }).request("/notes", {

@@ -3,7 +3,6 @@ package store
 import (
 	"context"
 	"errors"
-	"fmt"
 
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
@@ -109,10 +108,9 @@ func (p *Postgres) ListNotes(ctx context.Context, ownerID int64) ([]Note, error)
 }
 
 func (p *Postgres) SearchNotes(ctx context.Context, ownerID int64, query string) ([]Note, error) {
-	sql := fmt.Sprintf(
-		"SELECT id, owner_id, body, created_at FROM notes WHERE owner_id = %d AND body LIKE '%%%s%%' ORDER BY id",
-		ownerID, query)
-	rows, err := p.pool.Query(ctx, sql)
+	rows, err := p.pool.Query(ctx,
+		`SELECT id, owner_id, body, created_at FROM notes
+		 WHERE owner_id = $1 AND body LIKE '%' || $2 || '%' ORDER BY id`, ownerID, query)
 	if err != nil {
 		return nil, err
 	}

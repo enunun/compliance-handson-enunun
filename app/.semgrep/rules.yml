@@ -1,0 +1,35 @@
+# 題材が使うライブラリ(pgx，Hono)に合わせた，Semgrepの自前のルール．
+# レジストリのルールセット(p/golang，p/typescript)と一緒に使う．
+rules:
+  - id: pgx-sql-built-from-string
+    languages: [go]
+    severity: ERROR
+    message: >-
+      SQLを文字列の組み立てで作っている．利用者の入力が混ざるとSQLインジェクションになる．
+      値はSQLの文字列に埋め込まず，プレースホルダーで渡す．
+    metadata:
+      cwe: "CWE-89: SQL Injection"
+    patterns:
+      - pattern-either:
+          - pattern: $DB.$METHOD($CTX, fmt.Sprintf(...), ...)
+          - pattern: $DB.$METHOD($CTX, $A + $B, ...)
+          - pattern: |
+              $SQL := fmt.Sprintf(...)
+              ...
+              $DB.$METHOD($CTX, $SQL, ...)
+      # pgxの問い合わせの関数だけを対象にする．
+      - metavariable-regex:
+          metavariable: $METHOD
+          regex: ^(Query|QueryRow|Exec)$
+
+  - id: hono-raw-with-variable
+    languages: [typescript]
+    severity: ERROR
+    message: >-
+      hono/html の raw() は，渡した文字列をエスケープしない．
+      利用者の入力が混ざるとXSSになる．JSXの中に値をそのまま書けばエスケープされる．
+    metadata:
+      cwe: "CWE-79: Cross-site Scripting"
+    patterns:
+      - pattern: raw($X)
+      - pattern-not: raw("...")

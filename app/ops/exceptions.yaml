@@ -11,3 +11,21 @@ exceptions:
       到達しないことを確かめたので，次の定期更新で4.5.2以上に上げるまで受け入れる．
     approver: "@security-lead"
     expires: 2026-12-31
+
+  - id: EXC-002
+    target: use-of-sha1
+    path: apps/api/internal/server/server.go
+    reason: >-
+      メモの一覧のETag(キャッシュの判定)にSHA-1を使っている．改ざんの検知や署名には使っていないので，
+      衝突攻撃の影響を受けない．誤検知として扱い，期限までにSHA-256へ替えるかを見直す．
+    approver: "@security-lead"
+    expires: 2026-12-31
+
+  - id: EXC-003
+    target: use-tls
+    path: apps/api/cmd/api/main.go
+    reason: >-
+      本番ではロードバランサーがTLSを終端し，APIへは内部のネットワークだけで届く構成である．
+      誤検知として扱い，期限までに構成を見直す．
+    approver: "@security-lead"
+    expires: 2026-12-31

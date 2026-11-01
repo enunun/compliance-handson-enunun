@@ -82,3 +82,15 @@ items:
     evidence: 証跡の保管場所の設定(Object Lock，保管期間)と，運用テストの結果
     timing: 定常(変更ごと)
     actor: 自動
+
+  - id: sast
+    title: コードの脆弱性検査(SAST)
+    category: 基盤運用
+    requirements: [ISO27001:A.8.28, SSDF:PW.7]
+    mechanisms:
+      - workflow: ci.yml
+        job: sast
+    evidence: Semgrepの結果(JSONとSARIF)を証跡の保管場所に保管
+    timing: 定常(変更ごと)
+    actor: 自動
+    runbook: runbooks/exception-request.md

@@ -1,0 +1,7 @@
+exceptions:
+  - id: EXC-001
+    target: use-of-sha1
+    path: etag.go
+    reason: テスト用の例外
+    approver: "@security-lead"
+    expires: 2099-12-31

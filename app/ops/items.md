@@ -11,3 +11,4 @@
 | sbom | SBOMの作成 | 基盤運用 | SSDF:PS.3<br>METI:SBOM導入の手引 | ci.yml: sbom | コンポーネントごとのSBOM(CycloneDX)を証跡の保管場所に保管 | 定常(変更ごと) | 自動 |  |
 | license-policy | ライセンスの検査 | 運用管理 | ISO27001:A.5.32 | ci.yml: sbom | ライセンスを含むSBOMと，CIのsbomジョブの結果 | 定常(変更ごと) | 自動 |  |
 | evidence-retention | 証跡の保管 | 基盤運用 | ISO27001:A.5.33<br>SOC2:CC4.1 | ci.yml: evidence | 証跡の保管場所の設定(Object Lock，保管期間)と，運用テストの結果 | 定常(変更ごと) | 自動 |  |
+| sast | コードの脆弱性検査(SAST) | 基盤運用 | ISO27001:A.8.28<br>SSDF:PW.7 | ci.yml: sast | Semgrepの結果(JSONとSARIF)を証跡の保管場所に保管 | 定常(変更ごと) | 自動 | [手順書](runbooks/exception-request.md) |

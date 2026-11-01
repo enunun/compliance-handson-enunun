@@ -62,6 +62,11 @@ description = "例外の期限を検査する"
 depends = ["install"]
 run = "pnpm exec tsx tools/gates/exceptions.ts"
 
+[tasks."gate:sast"]
+description = "コードの脆弱性をSemgrepで検査する"
+depends = ["install"]
+run = "pnpm exec tsx tools/gates/sast.ts"
+
 [tasks.sbom]
 description = "コンポーネントごとのSBOM(CycloneDX)を作る"
 depends = ["install"]
@@ -101,7 +106,7 @@ depends = ["lint", "test", "test:gates", "ops:verify"]
 
 [tasks.gates]
 description = "すべてのゲートを実行する(CIではゲートごとのジョブ)"
-depends = ["gate:secrets", "gate:sca", "gate:exceptions", "gate:license"]
+depends = ["gate:secrets", "gate:sca", "gate:exceptions", "gate:license", "gate:sast"]
 
 [tasks.check]
 description = "題材の検査とゲートをまとめて実行する"
