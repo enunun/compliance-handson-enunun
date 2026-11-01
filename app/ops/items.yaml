@@ -13,3 +13,15 @@ items:
     timing: 定常(変更ごと)
     actor: 自動
     runbook: runbooks/emergency-change.md
+
+  - id: secret-detection
+    title: シークレット検出
+    category: 運用管理
+    requirements: [ISO27001:A.5.17, ISO27001:A.8.4, SSDF:PS.1]
+    mechanisms:
+      - workflow: ci.yml
+        job: secrets
+    evidence: gitleaksの結果(JSON，キーは伏せ字)をCIのartifactとして保存
+    timing: 定常(変更ごと，コミットごと)
+    actor: 自動
+    runbook: runbooks/secret-leak.md

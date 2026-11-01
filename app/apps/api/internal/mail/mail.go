@@ -6,7 +6,8 @@ type Client struct {
 	apiKey string
 }
 
-// NewDefault は，チームで共有しているAPIキーでクライアントを作る．
-func NewDefault() *Client {
-	return &Client{apiKey: "mk_9f2c7a41e8b35d06c1f4a7e92b8d3c5f"}
+// New は，APIキーを受け取ってクライアントを作る．
+// APIキーは，起動時に環境変数(MAIL_API_KEY)などから渡す．
+func New(apiKey string) *Client {
+	return &Client{apiKey: apiKey}
 }

@@ -1,0 +1,12 @@
+# gitleaksの設定．既定のルールに，このリポジトリでの例外を足す．
+[extend]
+useDefault = true
+
+[[allowlists]]
+description = "ゲートのテストとその入力，教材の仕込みのパッチ"
+paths = ['''^app/tests/gates/''', '''^iterations/''']
+
+[[allowlists]]
+description = "無効化済みのキー．対応の記録は app/ops/runbooks/secret-leak.md の記録欄にある"
+regexTarget = "secret"
+regexes = ['''^mk_9f2c7a41e8b35d06c1f4a7e92b8d3c5f$''']

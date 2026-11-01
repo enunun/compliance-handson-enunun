@@ -14,3 +14,6 @@ pre-commit:
     markdownlint:
       glob: "*.md"
       run: pnpm markdownlint-cli2 {staged_files}
+
+    secrets:
+      run: mise -C app run gate:secrets:staged

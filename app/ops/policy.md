@@ -16,3 +16,9 @@
 mainへの変更は，すべてプルリクエストで行う．
 mainに入るには，standards.yaml の `change.required_approvals` 人の承認と，CIの `check` ジョブの成功が要る．
 障害の復旧などで待てないときは，[緊急変更の手順](runbooks/emergency-change.md)に従う．
+
+## 連絡先
+
+| 事象 | 最初に知らせる相手 | 手段 |
+| --- | --- | --- |
+| シークレットの漏洩 | セキュリティ責任者 | チャットの #security と電話 |

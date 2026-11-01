@@ -41,6 +41,17 @@ description = "ゲートのテストを実行する"
 depends = ["install"]
 run = "pnpm test:gates"
 
+[tasks."gate:secrets"]
+description = "gitの履歴全体からシークレットを探す(引数でリポジトリの場所を変えられる)"
+run = [
+  "mkdir -p out/evidence/secrets",
+  "gitleaks git --config ../.gitleaks.toml --redact --report-format json --report-path out/evidence/secrets/gitleaks.json",
+]
+
+[tasks."gate:secrets:staged"]
+description = "コミットしようとしている変更からシークレットを探す(引数でリポジトリの場所を変えられる)"
+run = "gitleaks git --config ../.gitleaks.toml --redact --pre-commit --staged"
+
 [tasks."ops:verify"]
 description = "基準値と運用項目を検証し，仕組みとワークフローを突き合わせる"
 depends = ["install"]
@@ -60,9 +71,17 @@ gh api "repos/{owner}/{repo}/branches/main/protection" \
 echo "wrote out/evidence/change/branch-protection-$(date +%Y%m%d).json"
 """
 
-[tasks.check]
-description = "題材の検査をまとめて実行する(CIと同じ)"
+[tasks."check:code"]
+description = "コードと運用項目を検査する(CIのcheckジョブ)"
 depends = ["lint", "test", "test:gates", "ops:verify"]
+
+[tasks.gates]
+description = "すべてのゲートを実行する(CIではゲートごとのジョブ)"
+depends = ["gate:secrets"]
+
+[tasks.check]
+description = "題材の検査とゲートをまとめて実行する"
+depends = ["check:code", "gates"]
 
 [tasks.up]
 description = "MiniStackの上に本番の環境を作る"
