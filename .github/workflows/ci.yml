@@ -92,10 +92,40 @@ jobs:
           name: evidence-sast
           path: app/out/evidence/
 
+  image:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: app
+    steps:
+      - uses: actions/checkout@v5
+      - uses: jdx/mise-action@v3
+      - run: mise run gate:image
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: evidence-image
+          path: app/out/evidence/
+
+  config:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: app
+    steps:
+      - uses: actions/checkout@v5
+      - uses: jdx/mise-action@v3
+      - run: mise run gate:config
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: evidence-config
+          path: app/out/evidence/
+
   # ゲートのジョブが残した証跡を集め，証跡の保管場所へ送る．
   # 保管場所は，ジョブの中で起動したMiniStackの上に作る．
   evidence:
-    needs: [secrets, sca, sbom, sast]
+    needs: [secrets, sca, sbom, sast, image, config]
     if: always()
     runs-on: ubuntu-latest
     services:

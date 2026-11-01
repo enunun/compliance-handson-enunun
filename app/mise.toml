@@ -67,6 +67,20 @@ description = "コードの脆弱性をSemgrepで検査する"
 depends = ["install"]
 run = "pnpm exec tsx tools/gates/sast.ts"
 
+[tasks."image:build"]
+description = "APIのコンテナイメージを作る(DOCKER_BUILD_ARGS でビルドの引数を足せる)"
+run = "docker build ${DOCKER_BUILD_ARGS:-} -t app-api:local apps/api"
+
+[tasks."gate:image"]
+description = "APIのコンテナイメージの脆弱性とOSのサポートを検査する"
+depends = ["install", "image:build"]
+run = "pnpm exec tsx tools/gates/image.ts"
+
+[tasks."gate:config"]
+description = "DockerfileとOpenTofuのコードの設定の誤りを検査する"
+depends = ["install"]
+run = "pnpm exec tsx tools/gates/config.ts"
+
 [tasks.sbom]
 description = "コンポーネントごとのSBOM(CycloneDX)を作る"
 depends = ["install"]
@@ -106,7 +120,7 @@ depends = ["lint", "test", "test:gates", "ops:verify"]
 
 [tasks.gates]
 description = "すべてのゲートを実行する(CIではゲートごとのジョブ)"
-depends = ["gate:secrets", "gate:sca", "gate:exceptions", "gate:license", "gate:sast"]
+depends = ["gate:secrets", "gate:sca", "gate:exceptions", "gate:license", "gate:sast", "gate:image", "gate:config"]
 
 [tasks.check]
 description = "題材の検査とゲートをまとめて実行する"

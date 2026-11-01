@@ -12,3 +12,5 @@
 | license-policy | ライセンスの検査 | 運用管理 | ISO27001:A.5.32 | ci.yml: sbom | ライセンスを含むSBOMと，CIのsbomジョブの結果 | 定常(変更ごと) | 自動 |  |
 | evidence-retention | 証跡の保管 | 基盤運用 | ISO27001:A.5.33<br>SOC2:CC4.1 | ci.yml: evidence | 証跡の保管場所の設定(Object Lock，保管期間)と，運用テストの結果 | 定常(変更ごと) | 自動 |  |
 | sast | コードの脆弱性検査(SAST) | 基盤運用 | ISO27001:A.8.28<br>SSDF:PW.7 | ci.yml: sast | Semgrepの結果(JSONとSARIF)を証跡の保管場所に保管 | 定常(変更ごと) | 自動 | [手順書](runbooks/exception-request.md) |
+| container-image | コンテナイメージの検査 | 基盤運用 | ISO27001:A.8.8<br>ISO27001:A.8.9 | ci.yml: image | Trivyの結果(JSON)を証跡の保管場所に保管 | 定常(変更ごと) | 自動 |  |
+| iac-config | DockerfileとOpenTofuの設定の検査 | 基盤運用 | ISO27001:A.8.9<br>SOC2:CC7.1 | ci.yml: config | Trivyの結果(JSON)を証跡の保管場所に保管 | 定常(変更ごと) | 自動 |  |

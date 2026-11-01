@@ -94,3 +94,25 @@ items:
     timing: 定常(変更ごと)
     actor: 自動
     runbook: runbooks/exception-request.md
+
+  - id: container-image
+    title: コンテナイメージの検査
+    category: 基盤運用
+    requirements: [ISO27001:A.8.8, ISO27001:A.8.9]
+    mechanisms:
+      - workflow: ci.yml
+        job: image
+    evidence: Trivyの結果(JSON)を証跡の保管場所に保管
+    timing: 定常(変更ごと)
+    actor: 自動
+
+  - id: iac-config
+    title: DockerfileとOpenTofuの設定の検査
+    category: 基盤運用
+    requirements: [ISO27001:A.8.9, SOC2:CC7.1]
+    mechanisms:
+      - workflow: ci.yml
+        job: config
+    evidence: Trivyの結果(JSON)を証跡の保管場所に保管
+    timing: 定常(変更ごと)
+    actor: 自動

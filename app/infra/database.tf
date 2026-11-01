@@ -22,6 +22,7 @@ resource "aws_db_instance" "app" {
   username            = "app"
   password            = random_password.db.result
   skip_final_snapshot = true
+  storage_encrypted   = true
 
   lifecycle {
     # MiniStackは指定しない値にallocated_storageと同じ値を返すので，差分から外す．
