@@ -3,6 +3,7 @@ module github.com/enunun/compliance-handson/app/apps/api
 go 1.26.8
 
 require (
+	github.com/golang-jwt/jwt/v4 v4.5.1
 	github.com/jackc/pgx/v5 v5.11.0
 	golang.org/x/crypto v0.57.0
 )

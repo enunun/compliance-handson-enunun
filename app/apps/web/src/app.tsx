@@ -1,6 +1,7 @@
 import { type Note, noteInputSchema } from "@app/shared";
 import { Hono } from "hono";
 import { deleteCookie, getCookie, setCookie } from "hono/cookie";
+import truncate from "lodash/truncate.js";
 
 type Options = {
   /** APIのベースURL(例：http://localhost:8080)． */
@@ -121,7 +122,7 @@ function NotesPage({ notes }: { notes: Note[] }) {
       </form>
       <ul>
         {notes.map((note) => (
-          <li>{note.body}</li>
+          <li>{truncate(note.body, { length: 100 })}</li>
         ))}
       </ul>
     </Layout>
