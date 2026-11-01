@@ -2,4 +2,5 @@
 # @security-lead は，自分のGitHubのアカウントかチームに置き換える．
 
 /app/ops/standards.yaml @security-lead
+/app/ops/exceptions.yaml @security-lead
 /.github/CODEOWNERS @security-lead

@@ -1,0 +1,11 @@
+exceptions:
+  - id: EXC-001
+    target: CVE-2021-23337
+    reason: テスト用の例外
+    approver: "@security-lead"
+    expires: 2099-12-31
+  - id: EXC-002
+    target: CVE-2026-4800
+    reason: テスト用の例外
+    approver: "@security-lead"
+    expires: 2099-12-31

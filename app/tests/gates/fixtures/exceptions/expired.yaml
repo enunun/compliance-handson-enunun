@@ -1,0 +1,6 @@
+exceptions:
+  - id: EXC-001
+    target: CVE-0000-0001
+    reason: テスト用の例外
+    approver: "@security-lead"
+    expires: 2026-09-30

@@ -2,6 +2,7 @@ import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { parseArgs } from "node:util";
 import { Ajv2020 } from "ajv/dist/2020.js";
+import addFormats from "ajv-formats";
 import { type ItemsFile, readYaml } from "./items.ts";
 import { render, renderedPath } from "./render.ts";
 
@@ -21,6 +22,7 @@ export type VerifyOptions = {
 export function verify(options: VerifyOptions): Problem[] {
   const problems: Problem[] = [];
   const ajv = new Ajv2020({ allErrors: true });
+  addFormats.default(ajv);
 
   const validate = (name: string): unknown => {
     const file = join(options.opsDir, `${name}.yaml`);
@@ -41,6 +43,9 @@ export function verify(options: VerifyOptions): Problem[] {
   };
 
   validate("standards");
+  if (existsSync(join(options.opsDir, "exceptions.yaml"))) {
+    validate("exceptions");
+  }
   const items = validate("items") as ItemsFile | undefined;
   if (!items) {
     return problems;

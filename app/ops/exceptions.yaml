@@ -1,0 +1,13 @@
+# yaml-language-server: $schema=./schema/exceptions.schema.json
+# 例外．追加と延長には，セキュリティ責任者の承認が要る(.github/CODEOWNERS)．
+# 申請の手順は runbooks/exception-request.md にある．
+
+exceptions:
+  - id: EXC-001
+    target: CVE-2025-30204
+    package: github.com/golang-jwt/jwt/v4
+    reason: >-
+      脆弱なのはトークンを解析する処理(ParseUnverified)で，APIはトークンに署名するだけで解析しない．
+      到達しないことを確かめたので，次の定期更新で4.5.2以上に上げるまで受け入れる．
+    approver: "@security-lead"
+    expires: 2026-12-31

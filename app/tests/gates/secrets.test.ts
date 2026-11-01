@@ -2,7 +2,7 @@ import { cpSync, mkdtempSync, readFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
-import { appRoot, fixture, run } from "./helpers.ts";
+import { evidenceDir, fixture, run } from "./helpers.ts";
 
 const leakedKey = "pk_51c8e3a9f07b2d46e1a5c9f38b7d2e04";
 
@@ -46,7 +46,7 @@ describe("gate:secrets", () => {
   it("出力と証跡にキーそのものを書かない", () => {
     const result = run("mise", ["run", "gate:secrets", repoFrom("leaked")]);
     const report = readFileSync(
-      join(appRoot, "out/evidence/secrets/gitleaks.json"),
+      join(evidenceDir, "secrets/gitleaks.json"),
       "utf8",
     );
     expect(report).toContain("generic-api-key");

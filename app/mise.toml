@@ -44,13 +44,23 @@ run = "pnpm test:gates"
 [tasks."gate:secrets"]
 description = "gitの履歴全体からシークレットを探す(引数でリポジトリの場所を変えられる)"
 run = [
-  "mkdir -p out/evidence/secrets",
-  "gitleaks git --config ../.gitleaks.toml --redact --report-format json --report-path out/evidence/secrets/gitleaks.json",
+  'mkdir -p "${EVIDENCE_DIR:-out/evidence}/secrets"',
+  'gitleaks git --config ../.gitleaks.toml --redact --report-format json --report-path "${EVIDENCE_DIR:-out/evidence}/secrets/gitleaks.json"',
 ]
 
 [tasks."gate:secrets:staged"]
 description = "コミットしようとしている変更からシークレットを探す(引数でリポジトリの場所を変えられる)"
 run = "gitleaks git --config ../.gitleaks.toml --redact --pre-commit --staged"
+
+[tasks."gate:sca"]
+description = "依存関係の既知の脆弱性を検査する"
+depends = ["install"]
+run = "pnpm exec tsx tools/gates/sca.ts"
+
+[tasks."gate:exceptions"]
+description = "例外の期限を検査する"
+depends = ["install"]
+run = "pnpm exec tsx tools/gates/exceptions.ts"
 
 [tasks."ops:verify"]
 description = "基準値と運用項目を検証し，仕組みとワークフローを突き合わせる"
@@ -77,7 +87,7 @@ depends = ["lint", "test", "test:gates", "ops:verify"]
 
 [tasks.gates]
 description = "すべてのゲートを実行する(CIではゲートごとのジョブ)"
-depends = ["gate:secrets"]
+depends = ["gate:secrets", "gate:sca", "gate:exceptions"]
 
 [tasks.check]
 description = "題材の検査とゲートをまとめて実行する"

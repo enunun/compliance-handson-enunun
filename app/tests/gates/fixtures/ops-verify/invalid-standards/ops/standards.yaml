@@ -1,2 +1,6 @@
 change:
   required_approvals: 0
+vulnerability:
+  fail_severity: HIGH
+exception:
+  max_days: 90

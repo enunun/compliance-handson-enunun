@@ -36,3 +36,28 @@ jobs:
         with:
           name: evidence-secrets
           path: app/out/evidence/secrets/
+
+  sca:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: app
+    steps:
+      - uses: actions/checkout@v5
+      - uses: jdx/mise-action@v3
+      - run: mise run gate:sca
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: evidence-sca
+          path: app/out/evidence/sca/
+
+  exceptions:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: app
+    steps:
+      - uses: actions/checkout@v5
+      - uses: jdx/mise-action@v3
+      - run: mise run gate:exceptions

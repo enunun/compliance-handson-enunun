@@ -3,3 +3,11 @@
 
 change:
   required_approvals: 1
+
+vulnerability:
+  # この重大度以上の脆弱性があれば，ゲートを失敗させる．
+  fail_severity: HIGH
+
+exception:
+  # 例外の期限は，承認した日から最長でこの日数までにする．
+  max_days: 90

@@ -8,7 +8,9 @@
       "description": "変更管理の基準",
       "type": "object",
       "additionalProperties": false,
-      "required": ["required_approvals"],
+      "required": [
+        "required_approvals"
+      ],
       "properties": {
         "required_approvals": {
           "description": "mainへの変更に要る承認の数",
@@ -16,7 +18,45 @@
           "minimum": 1
         }
       }
+    },
+    "vulnerability": {
+      "description": "脆弱性の基準",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "fail_severity"
+      ],
+      "properties": {
+        "fail_severity": {
+          "description": "この重大度以上の脆弱性でゲートを失敗させる",
+          "enum": [
+            "LOW",
+            "MEDIUM",
+            "HIGH",
+            "CRITICAL"
+          ]
+        }
+      }
+    },
+    "exception": {
+      "description": "例外の基準",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "max_days"
+      ],
+      "properties": {
+        "max_days": {
+          "description": "例外の期限として認める最長の日数",
+          "type": "integer",
+          "minimum": 1
+        }
+      }
     }
   },
-  "required": ["change"]
+  "required": [
+    "change",
+    "vulnerability",
+    "exception"
+  ]
 }
